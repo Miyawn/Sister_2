@@ -20,13 +20,17 @@ class FailureDetector:
         print(f"[{self.config.NODE_ID}] Memulai Failure Detector Ping Loop...")
         
         while True:
-            await asyncio.sleep(self.ping_interval)
-            
+            # --- PERBAIKAN: PING DULU ---
             tasks = []
             for node_id, url in self.config.PEERS.items():
                 tasks.append(self.ping_node(node_id, f"{url}/health"))
             
             await asyncio.gather(*tasks)
+            # -------------------------------
+            
+            # BARU TIDUR SETELAH PING
+            await asyncio.sleep(self.ping_interval) 
+            
             # Sesekali print status untuk debugging
             # print(f"[{self.config.NODE_ID}] Health Check: Alive={self.alive_nodes}, Dead={self.dead_nodes}")
 
