@@ -1,0 +1,19 @@
+# Gunakan image Python 3.8+ yang stabil
+FROM python:3.10-slim
+
+# Tetapkan direktori kerja
+WORKDIR /app
+
+# Salin file dependensi dan install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Salin kode sumber aplikasi
+COPY ./src /app/src
+
+# Port yang akan diekspos oleh container (default 8000)
+EXPOSE 8000
+
+# Perintah untuk menjalankan aplikasi
+# Kita akan membuat 'src/main.py' sebagai entrypoint
+CMD ["python", "src/main.py"]

@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # Redis untuk distributed state
+  redis:
+    image: "redis:7-alpine"
+    container_name: redis
+    ports:
+      # Mengekspos ke host (VM Kali Anda) untuk debugging
+      - "6379:6379"
+    networks:
+      - distributed_net
+
+  # === Implementasi Geo-Distributed (Bonus) ===
+  # Kita simulasikan region dengan men-set variabel lingkungan
+
+  # Node di Region us-east-1
+  node1:
+    build:
+      context: .. # Lokasi dari Dockerfile
+      dockerfile: docker/Dockerfile.node
+    container_name: node1
+    ports:
+      - "8001:8000" # Map port 8000 internal ke 8001 di VM Kali
+    networks:
+      - distributed_net
+    environment:
+      - NODE_ID=node1
+      - NODE_PORT=8000
+      - NODE_REGION=us-east-1
+      - NODE_LIST=node1:8000,node2:8000,node3:8000,node4_byz:8000
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  # Node di Region eu-west-1
+  node2:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    container_name: node2
+    ports:
+      - "8002:8000"
+    networks:
+      - distributed_net
+    environment:
+      - NODE_ID=node2
+      - NODE_PORT=8000
+      - NODE_REGION=eu-west-1
+      - NODE_LIST=node1:8000,node2:8000,node3:8000,node4_byz:8000
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  # Node di Region ap-south-1
+  node3:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    container_name: node3
+    ports:
+      - "8003:8000"
+    networks:
+      - distributed_net
+    environment:
+      - NODE_ID=node3
+      - NODE_PORT=8000
+      - NODE_REGION=ap-south-1
+      - NODE_LIST=node1:8000,node2:8000,node3:8000,node4_byz:8000
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  # === Node untuk Bonus PBFT ===
+  # Kita perlu 4 node untuk f = 1 (n = 3f + 1)
+  # Node ini bisa kita buat 'Byzantine' (jahat) untuk pengujian
+  node4_byz:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    container_name: node4_byz
+    ports:
+      - "8004:8000"
+    networks:
+      - distributed_net
+    environment:
+      - NODE_ID=node4_byz
+      - NODE_PORT=8000
+      - NODE_REGION=us-east-1 # Region yang sama dengan node1
+      - NODE_LIST=node1:8000,node2:8000,node3:8000,node4_byz:8000
+      - REDIS_HOST=redis
+      - IS_BYZANTINE=True # Flag untuk mengaktifkan perilaku jahat
+    depends_on:
+      - redis
+
+networks:
+  distributed_net:
+    driver: bridge
