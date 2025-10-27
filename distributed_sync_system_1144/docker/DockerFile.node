@@ -6,10 +6,8 @@ WORKDIR /app
 
 # Salin file dependensi dan install
 COPY requirements.txt .
+RUN ls -l
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install aiohttp
-RUN pip install python-dotenv
-
 
 # Salin kode sumber aplikasi
 COPY ./src /app/src
