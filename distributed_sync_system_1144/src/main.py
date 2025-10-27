@@ -1,30 +1,35 @@
 import asyncio
+import aiohttp  # <--- PERBAIKAN 1: Impor yang hilang ditambahkan
 from aiohttp import web
 from dotenv import load_dotenv
 
 # Import utilitas dan konfigurasi
-from utils.config import Config
-# from utils.metrics import start_prometheus_server # Akan digunakan nanti
+# PERBAIKAN 2: Menggunakan impor relatif (tanda titik)
+from .utils.config import Config
+# from .utils.metrics import start_prometheus_server # Akan digunakan nanti
 
 # Import modul komunikasi
-from communication import message_passing
-from communication.failure_detector import FailureDetector
+from .communication import message_passing
+from .communication.failure_detector import FailureDetector
 
 # --- Placeholder untuk modul lain (belum diimplementasikan) ---
 class MockModule:
+    # PERBAIKAN 3: Indentasi diperbaiki dengan spasi standar
     def __init__(self, *args, **kwargs): pass
 LockManager = QueueNode = CacheNode = RaftNode = PbftNode = MockModule
 # --- Akhir Placeholder ---
 
 async def main():
     """Fungsi utama untuk inisialisasi dan menjalankan server node."""
+    
+    # PERBAIKAN 3: Semua indentasi di bawah ini telah diperbaiki
     load_dotenv()
     
     config = Config()
     app = web.Application()
     
     app['config'] = config
-    app['http_client'] = aiohttp.ClientSession()
+    app['http_client'] = aiohttp.ClientSession() # Ini sekarang akan berfungsi
     
     print(f"🚀 Memulai node: {config.NODE_ID} di region {config.NODE_REGION} (Port: {config.NODE_PORT})")
     if config.IS_BYZANTINE:
