@@ -4,23 +4,22 @@ from aiohttp import web
 from dotenv import load_dotenv
 
 # Import utilitas dan konfigurasi
-# PERBAIKAN: Impor dari direktori yang sama ('.')
-from .config import Config 
-# from .metrics import start_prometheus_server # Akan digunakan nanti
+from .utils.config import Config
+# from .utils.metrics import start_prometheus_server # Akan digunakan nanti
 
 # Import modul komunikasi
-# PERBAIKAN: Naik satu level ('..') untuk menemukan 'communication'
-from ..communication import message_passing 
-from ..communication.failure_detector import FailureDetector
+from .communication import message_passing
+from .communication.failure_detector import FailureDetector
 
 # --- Placeholder untuk modul lain (belum diimplementasikan) ---
-# PERBAIKAN: Naik satu level ('..') untuk menemukan 'nodes'
-from ..nodes.queue_node import QueueNode 
+# Impor QueueNode yang asli
+from .nodes.queue_node import QueueNode # <--- EDIT INI
 
 class MockModule:
     def __init__(self, *args, **kwargs): pass
 
-LockManager = CacheNode = RaftNode = PbftNode = MockModule
+# Hapus QueueNode dari baris ini
+LockManager = CacheNode = RaftNode = PbftNode = MockModule # <--- EDIT INI
 # --- Akhir Placeholder ---
 
 async def main():
