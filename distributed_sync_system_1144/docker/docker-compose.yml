@@ -17,7 +17,7 @@ services:
   # Node di Region us-east-1
   node1:
     build:
-      context: . # Lokasi dari Dockerfile
+      context: .. # Lokasi dari Dockerfile
       dockerfile: docker/DockerFile.node
     container_name: node1
     ports:
@@ -36,7 +36,7 @@ services:
   # Node di Region eu-west-1
   node2:
     build:
-      context: .
+      context: ..
       dockerfile: docker/DockerFile.node
     container_name: node2
     ports:
@@ -55,7 +55,7 @@ services:
   # Node di Region ap-south-1
   node3:
     build:
-      context: .
+      context: ..
       dockerfile: docker/DockerFile.node
     container_name: node3
     ports:
@@ -76,7 +76,7 @@ services:
   # Node ini bisa kita buat 'Byzantine' (jahat) untuk pengujian
   node4_byz:
     build:
-      context: .
+      context: ..
       dockerfile: docker/DockerFile.node
     container_name: node4_byz
     ports:
