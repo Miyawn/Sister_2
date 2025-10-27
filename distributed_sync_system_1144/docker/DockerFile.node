@@ -17,4 +17,4 @@ EXPOSE 8000
 
 # Perintah untuk menjalankan aplikasi
 # Kita akan membuat 'src/main.py' sebagai entrypoint
-CMD ["python", "-u", "-m", "src.utils.main"]
+CMD ["python", "-u", "-m", "src.main"]
