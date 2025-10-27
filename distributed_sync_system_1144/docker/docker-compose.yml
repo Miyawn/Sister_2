@@ -77,7 +77,7 @@ services:
   node4_byz:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.node
+      dockerfile: docker/DockerFile.node
     container_name: node4_byz
     ports:
       - "8004:8000"
