@@ -18,7 +18,7 @@ services:
   node1:
     build:
       context: .. # Lokasi dari Dockerfile
-      dockerfile: docker/Dockerfile.node
+      dockerfile: docker/DockerFile.node
     container_name: node1
     ports:
       - "8001:8000" # Map port 8000 internal ke 8001 di VM Kali
@@ -37,7 +37,7 @@ services:
   node2:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.node
+      dockerfile: docker/DockerFile.node
     container_name: node2
     ports:
       - "8002:8000"
@@ -56,7 +56,7 @@ services:
   node3:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.node
+      dockerfile: docker/DockerFile.node
     container_name: node3
     ports:
       - "8003:8000"
