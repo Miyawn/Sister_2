@@ -10,7 +10,7 @@ RUN ls -l
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Salin kode sumber aplikasi
-COPY ./src /app/src
+COPY ./src /src
 
 # Port yang akan diekspos oleh container (default 8000)
 EXPOSE 8000
